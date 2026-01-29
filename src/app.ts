@@ -1,7 +1,10 @@
 import express from 'express';
+import cors from 'cors';
 import eventsRoutes from './events/events.routes';
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/events', eventsRoutes);

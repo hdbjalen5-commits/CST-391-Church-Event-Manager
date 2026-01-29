@@ -21,21 +21,35 @@ export class EventsController {
   }
 
   public static async create(req: Request, res: Response) {
-    const id = await EventsDAO.create(req.body);
-    res.status(201).json({ id });
-  }
+  const event = {
+    title: req.body.title,
+    event_date: req.body.eventDate,
+    location: req.body.location
+  };
+
+  const id = await EventsDAO.create(event as any);
+  res.status(201).json({ id });
+}
 
   public static async update(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const updated = await EventsDAO.update(id, req.body);
+  const id = Number(req.params.id);
 
-    if (!updated) {
-      res.status(404).json({ message: 'Event not found' });
-      return;
-    }
+  const event = {
+    title: req.body.title,
+    event_date: req.body.eventDate,
+    location: req.body.location,
+    description: req.body.description
+  };
 
-    res.json({ message: 'Event updated' });
+  const updated = await EventsDAO.update(id, event);
+
+  if (!updated) {
+    res.status(404).json({ message: 'Event not found' });
+    return;
   }
+
+  res.json({ message: 'Event updated' });
+}
 
   public static async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
